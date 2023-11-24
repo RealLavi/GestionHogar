@@ -78,7 +78,7 @@ void checker() {
 	}
 }
 
-void addProduct(products items[], int &acum) {
+void addProduct(products items [], int acum) {
     int exit = 1;
     FILE *file = fopen("database.txt", "a");
     if (file == NULL) {
