@@ -21,6 +21,7 @@ struct products { //Creamos la estructura de los productos que vamos a ingresar.
 	int diaCad; //Fecha de caducidad.
 	int mesCad;
 	int anoCad;
+	int iteracion;
 };
 
 int addProduct(products items [], int acum); //funcion de añadir productos.
@@ -34,7 +35,7 @@ int main() {
 	checker();
 	setlocale(LC_ALL, "");
 	products items [9999]; //iniciamos muchos espacios en memoria
-	int menuOpt = 0, acum = 0; //usamos acum para tener en cuenta cuantos objetos hay existentes.
+	int menuOpt = 0, acum = 0, iteracion = 0; //usamos acum para tener en cuenta cuantos objetos hay existentes.
 	while(true){
 		cout << "############  MENÚ:  #############\n\n"; //menú provisional
 		cout << "1.\t Añadir un nuevo mercado.\n";
@@ -46,6 +47,7 @@ int main() {
 		switch (menuOpt){ //revisamos la entrada
 			case 1:
     			system("CLS");
+    			iteracion += 1;
 				acum = addProduct(items, acum);
 				break;
 			case 2:
@@ -83,68 +85,117 @@ void checker() {
 	}
 }
 
-int addProduct(products items [], int acum) {
-    int exit = 1, cantidadTemp, precioTemp, diaComTemp, mesComTemp, anoComTemp, diaCadTemp, mesCadTemp, anoCadTemp;
-    string varFecha, nombreTemp, categoriaTemp;
+int addProduct(products items[], int acum) {
+    bool continuar = true;
+    string nombreTemp, categoriaTemp;
+    int iteracion = 0, cantidadTemp, precioTemp, diaComTemp, mesComTemp, anoComTemp, diaCadTemp, mesCadTemp, anoCadTemp, exit = 1, precioAcum = 0;
+    products itemsTemp [999];
     FILE *file = fopen("database.txt", "a");
-    for (int i = acum; exit == 1; i++) {
-        cout << "Ingresa el nombre del producto:  ";
+	cout << "\n#####  Has seleccionado 'Añadir nuevo mercado'  #####" << endl << endl;
+	
+
+    cout << "\nPara comenzar, indica la fecha de compra del mercado:  \n";
+    cout << "---Dia: ";
+	cin >> diaComTemp;
+    cout << "---Mes: ";
+    cin >> mesComTemp;
+    cout << "---Año: ";
+    cin >> anoComTemp;
+    system("CLS");
+    while (exit == 1 && continuar) {
+		cout << "\nProducto #" << iteracion + 1 << ":\n\n";
+        cout << "\nIngresa el NOMBRE del producto:  ";
         cin >> nombreTemp;
-        
-        cout << "\nIngresa la categoría del producto:  ";
+
+        cout << "\nIngresa la CATEGORÍA del producto:  ";
         cin >> categoriaTemp;
-        
-        cout << "\nIngresa la cantidad de productos:  ";
+
+        cout << "\nIngresa la CANTIDAD de productos:  ";
         cin >> cantidadTemp;
-        
-        cout << "\nIndica el precio del producto:  ";
+
+        cout << "\nIndica el PRECIO del producto:  ";
         cin >> precioTemp;
-        cin.ignore();
-        
-        cout << "\nIndica la fecha de compra del producto:  \n";
-        cout << "Dia: ";
-        cin >> diaComTemp;
-        cout << "Mes: ";
-        cin >> mesComTemp;
-        cout << "Año: ";
-        cin >> anoComTemp;
-        
-        cout << "\nIndica la fecha de caducidad del producto:  \n";
-        cout << "Dia: ";
+
+        cout << "\nIndica la FECHA DE CADUCIDAD del producto:  \n";
+        cout << "---Dia: ";
         cin >> diaCadTemp;
-        cout << "Mes: ";
+        cout << "---Mes: ";
         cin >> mesCadTemp;
-        cout << "Año: ";
+        cout << "---Año: ";
         cin >> anoCadTemp;
         
+        itemsTemp[iteracion].nombre = nombreTemp;
+        itemsTemp[iteracion].categoria = categoriaTemp;
+        itemsTemp[iteracion].precio = precioTemp;
+        itemsTemp[iteracion].cantidad = cantidadTemp;
+        itemsTemp[iteracion].diaCom = diaComTemp;
+        itemsTemp[iteracion].mesCom = mesComTemp;
+        itemsTemp[iteracion].anoCom = anoComTemp;
+        itemsTemp[iteracion].diaCad = diaCadTemp;
+        itemsTemp[iteracion].mesCad = mesCadTemp;
+        itemsTemp[iteracion].anoCad = anoCadTemp;
+
         bool encontrado = false;
-        for (int j = 0; j < i; j++){
-        	if (nombreTemp == items[j].nombre && categoriaTemp == items[j].categoria && precioTemp == items[j].precio && diaComTemp == items[j].diaCom &&
-			mesComTemp == items[j].mesCom && anoComTemp == items[j].anoCom && diaCadTemp == items[j].diaCad && mesCadTemp == items[j].mesCad && anoCadTemp == items[j].anoCad){
-				items[j].cantidad += cantidadTemp;
-				encontrado = true;
-				break;
-			}
-		}
-		if (!encontrado){
-			items[i].nombre = nombreTemp;
-			items[i].categoria = categoriaTemp;
-			items[i].precio = precioTemp;
-			items[i].cantidad = cantidadTemp;
-			items[i].diaCom = diaComTemp;
-			items[i].mesCom = mesComTemp;	
-			items[i].anoCom = anoComTemp;
-			items[i].diaCad = diaCadTemp;
-			items[i].mesCad = mesCadTemp;
-			items[i].anoCad = anoCadTemp;
-			acum++;
-		}
-		
+        for (int j = 0; j < acum; j++) {
+            if (nombreTemp == items[j].nombre && categoriaTemp == items[j].categoria &&
+                precioTemp == items[j].precio && diaComTemp == items[j].diaCom &&
+                mesComTemp == items[j].mesCom && anoComTemp == items[j].anoCom &&
+                diaCadTemp == items[j].diaCad && mesCadTemp == items[j].mesCad &&
+                anoCadTemp == items[j].anoCad) {
+
+                items[j].cantidad += cantidadTemp;
+                precioAcum += items[j].precio;
+                encontrado = true;
+                
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            items[acum].nombre = nombreTemp;
+            items[acum].categoria = categoriaTemp;
+            items[acum].precio = precioTemp;
+            items[acum].cantidad = cantidadTemp;
+            items[acum].diaCom = diaComTemp;
+            items[acum].mesCom = mesComTemp;
+            items[acum].anoCom = anoComTemp;
+            items[acum].diaCad = diaCadTemp;
+            items[acum].mesCad = mesCadTemp;
+            items[acum].anoCad = anoCadTemp;
+            precioAcum += items[acum].precio;
+            acum++;
+        }
+
 		//el fprintf siguiente se debe actualizar con los nuevos inputs.
-		fprintf(file, "%s %s %d %d\n", items[i].nombre.c_str(), items[i].categoria.c_str(), items[i].cantidad, items[i].precio);
-		
-		cout << "¿Desea agregar otro producto? (1 para Sí, 0 para No): ";
+        cout << "¿Desea agregar otro producto? (1 para Sí, 0 para No): ";
         cin >> exit;
+
+        if (exit != 1) {
+        	system("CLS");
+            continuar = false;
+            //mostrar resumen de productos añadidos.
+            cout << "Los productos recientemente añadidos con fecha de compra " << itemsTemp[iteracion].diaCom << "/" << itemsTemp[iteracion].mesCom << "/" << itemsTemp[iteracion].anoCom << " son: \n\n";
+            for (int i = 0; i <= iteracion; i++){
+	            cout << "\nProducto #" << i+1 << endl;
+				cout << "Nombre: " << itemsTemp[i].nombre << endl;
+				cout << "Categoria: " << itemsTemp[i].categoria << endl;
+				cout <<	"Precio: " << itemsTemp[i].precio << endl;
+				cout << "Cantidad: " << itemsTemp[i].cantidad << endl;
+				cout <<	"Fecha de caducidad: " << itemsTemp[i].diaCad << "/" << itemsTemp[i].mesCad << "/" << itemsTemp[i].anoCad << endl;
+				cout << "------------------//--------------------\n\n";
+			}
+			cout << "\nEl valor total de los productos recientemente añadidos es de $"<< precioAcum <<". \n\n";
+			cout << "------------------//--------------------\n\n\n";
+			cout << "Presione enter para volver al menú principal...";
+			cin.ignore();
+			cin.get();
+			system("CLS");
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        else { 
+        	iteracion += 1;
+        	system("CLS");
+		}
     }
     fclose(file);
     return acum;
@@ -167,8 +218,9 @@ void listProduct(products items [], int acum){
 		cout << "Cantidad: " << items[i].cantidad << endl;
 		cout <<	"Fecha de compra: " << items[i].diaCom << "/" << items[i].mesCom << "/" << items[i].anoCom << endl;
 		cout <<	"Fecha de caducidad: " << items[i].diaCad << "/" << items[i].mesCad << "/" << items[i].anoCad << endl;
-		cout << "------------------//--------------------\n\n";
+		cout << "------------------//--------------------\n\n\n";
 	}
+	cout << "Presione enter para volver al menú principal...";
 	getch();
     system("CLS");
 }
