@@ -189,8 +189,8 @@ int addProduct(products items[], int acum) {
 			cout << "Presione enter para volver al menú principal...";
 			cin.ignore();
 			cin.get();
-			system("CLS");
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			system("CLS");
         }
         else { 
         	iteracion += 1;
@@ -226,6 +226,14 @@ void listProduct(products items [], int acum){
 }
 
 void modProduct(products items [], int acum) {
+	if(acum == 0){
+		system("CLS");
+		cout << "¡Aún no has agregado ningún producto!";
+		cout << "Presione enter para volver al menú principal...";
+		getch();
+		system("CLS");
+		return;
+	}
     string nombreBuscar;
     cout << "Ingrese el nombre del producto que desea modificar: ";
     cin >> nombreBuscar;
@@ -265,12 +273,20 @@ void modProduct(products items [], int acum) {
                     cin >> items[i].cantidad;
                     break;
                 case 5:
-                    cout << "Nueva fecha de compra (DD MM YYYY): ";
-                    cin >> items[i].diaCom >> items[i].mesCom >> items[i].anoCom;
+                    cout << "Nuevo día de compra: ";
+                    cin >> items[i].diaCom;
+                    cout << "Nuevo mes de compra: ";
+                    cin >> items[i].mesCom;
+                    cout << "Nuevo año de compra: ";
+                    cin >> items[i].anoCom;
                     break;
                 case 6:
-                    cout << "Nueva fecha de caducidad (DD MM YYYY): ";
-                    cin >> items[i].diaCad >> items[i].mesCad >> items[i].anoCad;
+                    cout << "Nuevo día de caducidad: ";
+                    cin >> items[i].diaCom;
+                    cout << "Nuevo mes de caducidad: ";
+                    cin >> items[i].mesCom;
+                    cout << "Nuevo año de caducidad: ";
+                    cin >> items[i].anoCom;
                     break;
                 case 0:
                 	system("CLS");
@@ -283,12 +299,21 @@ void modProduct(products items [], int acum) {
 
     if (!encontrado) {
         cout << "Producto no encontrado." << endl;
+        cout << "Presione enter para volver al menú principal...";
         getch();
 		system("CLS");
     }
 }
 
 void consuProduct(products items [], int acum) {
+	if(acum == 0){
+		system("CLS");
+		cout << "¡Aún no has agregado ningún producto!";
+		cout << "Presione enter para volver al menú principal...";
+		getch();
+		system("CLS");
+		return;
+	}
     string nombreBuscar;
     cout << "Ingrese el nombre del producto que desea consumir: ";
     cin >> nombreBuscar;
@@ -323,6 +348,7 @@ void consuProduct(products items [], int acum) {
     if (!encontrado) {
         cout << "Producto no encontrado." << endl;
     }
+    cout << "Presione enter para volver al menú principal...";
     getch();
     system("CLS");
 }
