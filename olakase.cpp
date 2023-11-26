@@ -131,8 +131,14 @@ int addProduct(products items[], int acum) {
 		cout << "\nProducto #" << iteracion + 1 << ":\n\n";
         cout << "\nIngresa el NOMBRE del producto:  ";
         cin >> nombreTemp;
+        for (size_t i = 0; i < nombreTemp.length(); ++i) { //pasamos el nombre a minuscula para prevenir errores.
+        	nombreTemp[i] = tolower(nombreTemp[i]);
+    	}
         cout << "\nIngresa la CATEGORÍA del producto:  ";
         cin >> categoriaTemp;
+        for (size_t i = 0; i < categoriaTemp.length(); ++i) { //pasamos el nombre a minuscula para prevenir errores.
+        	categoriaTemp[i] = tolower(categoriaTemp[i]);
+    	}
         while(true){
         	cout << "\nIngresa la CANTIDAD de productos:  ";
         	cin >> cantidadTemp;
@@ -209,7 +215,7 @@ int addProduct(products items[], int acum) {
                 anoCadTemp == items[j].anoCad) {
 
                 items[j].cantidad += cantidadTemp;
-                precioAcum += items[j].precio;
+                precioAcum += items[j].precio * items[j].cantidad;
                 encontrado = true;
                 
                 break;
@@ -227,7 +233,7 @@ int addProduct(products items[], int acum) {
             items[acum].diaCad = diaCadTemp;
             items[acum].mesCad = mesCadTemp;
             items[acum].anoCad = anoCadTemp;
-            precioAcum += items[acum].precio;
+            precioAcum += items[acum].precio * items[acum].cantidad;
             acum++;
         }
 
@@ -253,7 +259,7 @@ int addProduct(products items[], int acum) {
 			cout << "------------------//--------------------\n\n\n";
 			cout << "Presione enter para volver al menú principal...";
 			cin.ignore();
-			cin.get();
+			
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			system("CLS");
         }
@@ -326,6 +332,9 @@ void modProduct(products items [], int acum) {
     string nombreBuscar;
     cout << "Ingrese el nombre del producto que desea modificar: ";
     cin >> nombreBuscar;
+    for (size_t i = 0; i < nombreBuscar.length(); ++i) { //pasamos el nombre a minuscula para prevenir errores.
+        nombreBuscar[i] = tolower(nombreBuscar[i]);
+   	}
     bool encontrado = false;
     for (int i = 0; i < acum; i++) {
         if (nombreBuscar == items[i].nombre) {
@@ -348,12 +357,18 @@ void modProduct(products items [], int acum) {
                 case 1:
                     cout << "Nuevo nombre: ";
                     cin >> items[i].nombre;
+                    for (size_t j = 0; j < items[i].nombre.length(); ++j) { //pasamos el nombre a minuscula para prevenir errores.
+        				items[i].nombre[j] = tolower(items[i].nombre[j]);
+   					}
                     system("CLS");
                     cout << "¡Producto modificado con éxito!" << endl;
                     break;
                 case 2:
                     cout << "Nueva categoría: ";
                     cin >> items[i].categoria;
+                    for (size_t j = 0; j < items[i].categoria.length(); ++j) { //pasamos el nombre a minuscula para prevenir errores.
+        				items[i].categoria[j] = tolower(items[i].categoria[j]);
+   					}
                     system("CLS");
                     cout << "¡Producto modificado con éxito!" << endl;
                     break;
@@ -490,6 +505,9 @@ void consuProduct(products items [], int acum) {
     string nombreBuscar;
     cout << "Ingrese el nombre del producto que desea consumir: ";
     cin >> nombreBuscar;
+    for (size_t i = 0; i < nombreBuscar.length(); ++i) { //pasamos el nombre a minuscula para prevenir errores.
+        	nombreBuscar[i] = tolower(nombreBuscar[i]);
+    }
 
     bool encontrado = false;
     FILE *file = fopen("database.txt", "r+");
