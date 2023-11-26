@@ -292,33 +292,84 @@ bool checkCaducidad(int anoCad, int mesCad, int diaCad) {
 void listProduct(products items [], int acum){
 	//cout << acum;
 	string val;
-	if(acum == 0){
-		system("CLS");
-		cout << "¡Aún no has agregado ningún producto!";
-		getch();
-		system("CLS");
-		return;
-	}
-	for (int i = 0; i < acum; i++){
-		if (checkCaducidad(items[i].anoCad, items[i].mesCad, items[i].diaCad)){
-			val = "Producto APTO para consumo.";
-		}else{
-			val = "Producto NO APTO para consumo.";
+	cout << "\n1. Consultar todos los productos existentes.\n";
+    cout << "2. Consultar productos por fecha de vencimiento. \n";
+    cout << "0. Volver al menú principal.\n\n";
+	int opcion, diaTemp, mesTemp, anoTemp;
+	
+    cout << "Seleccione una opción:  ";
+    cin >> opcion;
+    
+    if (opcion == 1){
+		if(acum == 0){
+			system("CLS");
+			cout << "¡Aún no has agregado ningún producto!";
+			getch();
+			system("CLS");
+			return;
 		}
-		cout << "\n\t ** Producto #" << i+1 << endl;
-		cout << "Nombre: " << items[i].nombre << endl;
-		cout << "Categoria: " << items[i].categoria << endl;
-		cout <<	"Precio: " << items[i].precio << endl;
-		cout << "Cantidad: " << items[i].cantidad << endl;
-		cout <<	"Fecha de compra: " << items[i].diaCom << "/" << items[i].mesCom << "/" << items[i].anoCom << endl;
-		cout <<	"Fecha de caducidad: " << items[i].diaCad << "/" << items[i].mesCad << "/" << items[i].anoCad << endl;
-		cout << "Apto para consumo: " << val << endl;
-		cout << "------------------//--------------------\n\n\n";
+		for (int i = 0; i < acum; i++){
+			if (checkCaducidad(items[i].anoCad, items[i].mesCad, items[i].diaCad)){
+				val = "Producto APTO para consumo.";
+			}else{
+				val = "Producto NO APTO para consumo.";
+			}
+			cout << "\n\t ** Producto #" << i+1 << endl;
+			cout << "Nombre: " << items[i].nombre << endl;
+			cout << "Categoria: " << items[i].categoria << endl;
+			cout <<	"Precio: " << items[i].precio << endl;
+			cout << "Cantidad: " << items[i].cantidad << endl;
+			cout <<	"Fecha de compra: " << items[i].diaCom << "/" << items[i].mesCom << "/" << items[i].anoCom << endl;
+			cout <<	"Fecha de caducidad: " << items[i].diaCad << "/" << items[i].mesCad << "/" << items[i].anoCad << endl;
+			cout << "Apto para consumo: " << val << endl;
+			cout << "------------------//--------------------\n\n\n";
+		}
+		cout << "Presione enter para volver al menú principal...";
+		getch();
+	    system("CLS");
 	}
-	cout << "Presione enter para volver al menú principal...";
-	getch();
-    system("CLS");
+	else if (opcion == 2){
+		if(acum == 0){
+			system("CLS");
+			cout << "¡Aún no has agregado ningún producto!";
+			getch();
+			system("CLS");
+			return;
+		}
+		system("CLS");
+		cout << "\nPor favor ingrese la fecha de caducidad que desea buscar:  \n";
+		cout << "---Dia: ";
+		cin >> diaTemp;
+		cout << "---Mes: ";
+		cin >> mesTemp;
+		cout << "---Año: ";
+		cin >> anoTemp;
+		system("CLS");
+		for (int i = 0; i < acum; i++){
+			if (diaTemp == items[i].diaCad && mesTemp == items[i].mesCad && anoTemp == items[i].anoCad){
+				if (checkCaducidad(items[i].anoCad, items[i].mesCad, items[i].diaCad)){
+					val = "Producto APTO para consumo.";
+				}
+				else{
+					val = "Producto NO APTO para consumo.";
+				}
+				cout << "\n\t ** Producto #" << i+1 << endl;
+				cout << "Nombre: " << items[i].nombre << endl;
+				cout << "Categoria: " << items[i].categoria << endl;
+				cout <<	"Precio: " << items[i].precio << endl;
+				cout << "Cantidad: " << items[i].cantidad << endl;
+				cout <<	"Fecha de compra: " << items[i].diaCom << "/" << items[i].mesCom << "/" << items[i].anoCom << endl;
+				cout <<	"Fecha de caducidad: " << items[i].diaCad << "/" << items[i].mesCad << "/" << items[i].anoCad << endl;
+				cout << "Apto para consumo: " << val << endl;
+				cout << "------------------//--------------------\n\n\n";
+			}
+		}
+		cout << "Presione enter para volver al menú principal...";
+		getch();
+	    system("CLS");	
+	}	
 }
+	
 
 void modProduct(products items [], int acum) {
 	if(acum == 0){
