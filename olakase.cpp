@@ -92,15 +92,40 @@ int addProduct(products items[], int acum) {
     products itemsTemp [999];
     FILE *file = fopen("database.txt", "a");
 	cout << "\n#####  Has seleccionado 'Añadir nuevo mercado'  #####" << endl << endl;
-	
-
     cout << "\nPara comenzar, indica la fecha de compra del mercado:  \n";
-    cout << "---Dia: ";
-	cin >> diaComTemp;
-    cout << "---Mes: ";
-    cin >> mesComTemp;
-    cout << "---Año: ";
-    cin >> anoComTemp;
+    while(true){
+       	cout << "---Dia: ";
+       	cin >> diaComTemp;
+       	if(diaComTemp < 1 || diaComTemp > 31){
+       		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+       		getch();
+       		system("CLS");
+		}else{
+			break;
+		}
+    }
+    while(true){
+       	cout << "---Mes: ";
+       	cin >> mesComTemp;
+       	if(mesComTemp < 1 || mesComTemp > 12){
+       		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+       		getch();
+       		system("CLS");
+		}else{
+			break;
+		}
+    }
+       while(true){
+       	cout << "---Año: ";
+       	cin >> anoComTemp;
+       	if(anoComTemp < 1){
+       		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+       		getch();
+       		system("CLS");
+		}else{
+			break;
+		}
+    }
     system("CLS");
     while (exit == 1 && continuar) {
 		cout << "\nProducto #" << iteracion + 1 << ":\n\n";
@@ -108,21 +133,62 @@ int addProduct(products items[], int acum) {
         cin >> nombreTemp;
         cout << "\nIngresa la CATEGORÍA del producto:  ";
         cin >> categoriaTemp;
-
-        cout << "\nIngresa la CANTIDAD de productos:  ";
-        cin >> cantidadTemp;
-
-        cout << "\nIndica el PRECIO del producto:  ";
-        cin >> precioTemp;
-
+        while(true){
+        	cout << "\nIngresa la CANTIDAD de productos:  ";
+        	cin >> cantidadTemp;
+        	if(cantidadTemp < 1){
+        		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+        		getch();
+        		system("CLS");
+			}else{
+				break;
+			}
+        }
+        while(true){
+	        cout << "\nIndica el PRECIO del producto:  $";
+	        cin >> precioTemp;
+	        if(precioTemp < 1){
+        		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+        		getch();
+        		system("CLS");
+			}else{
+				break;
+			}
+	    }
         cout << "\nIndica la FECHA DE CADUCIDAD del producto:  \n";
-        cout << "---Dia: ";
-        cin >> diaCadTemp;
-        cout << "---Mes: ";
-        cin >> mesCadTemp;
-        cout << "---Año: ";
-        cin >> anoCadTemp;
-        
+        while(true){
+        	cout << "---Dia: ";
+        	cin >> diaCadTemp;
+        	if(diaCadTemp < 1 || diaCadTemp > 31){
+        		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+        		getch();
+        		system("CLS");
+			}else{
+				break;
+			}
+    	}
+    	while(true){
+        	cout << "---Mes: ";
+        	cin >> mesCadTemp;
+        	if(mesCadTemp < 1 || mesCadTemp > 12){
+        		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+        		getch();
+        		system("CLS");
+			}else{
+				break;
+			}
+    	}
+        while(true){
+        	cout << "---Año: ";
+        	cin >> anoCadTemp;
+        	if(anoCadTemp < 1){
+        		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+        		getch();
+        		system("CLS");
+			}else{
+				break;
+			}
+    	}
         itemsTemp[iteracion].nombre = nombreTemp;
         itemsTemp[iteracion].categoria = categoriaTemp;
         itemsTemp[iteracion].precio = precioTemp;
@@ -175,7 +241,7 @@ int addProduct(products items[], int acum) {
             //mostrar resumen de productos añadidos.
             cout << "Los productos recientemente añadidos con fecha de compra " << itemsTemp[iteracion].diaCom << "/" << itemsTemp[iteracion].mesCom << "/" << itemsTemp[iteracion].anoCom << " son: \n\n";
             for (int i = 0; i <= iteracion; i++){
-	            cout << "\nProducto #" << i+1 << endl;
+	            cout << "\n\t ** Producto #" << i+1 << endl;
 				cout << "Nombre: " << itemsTemp[i].nombre << endl;
 				cout << "Categoria: " << itemsTemp[i].categoria << endl;
 				cout <<	"Precio: " << itemsTemp[i].precio << endl;
@@ -233,7 +299,7 @@ void listProduct(products items [], int acum){
 		}else{
 			val = "Producto NO APTO para consumo.";
 		}
-		cout << "\nProducto #" << i+1 << endl;
+		cout << "\n\t ** Producto #" << i+1 << endl;
 		cout << "Nombre: " << items[i].nombre << endl;
 		cout << "Categoria: " << items[i].categoria << endl;
 		cout <<	"Precio: " << items[i].precio << endl;
@@ -292,34 +358,106 @@ void modProduct(products items [], int acum) {
                     cout << "¡Producto modificado con éxito!" << endl;
                     break;
                 case 3:
-                    cout << "Nuevo precio: ";
-                    cin >> items[i].precio;
+                	while(true){
+	                    cout << "Nuevo precio: ";
+	                    cin >> items[i].precio;
+	                    if(items[i].precio < 1){
+                    		cout << "Has ingresado un valor inválido... Intenta de nuevo.";
+                    		getch();
+                    		system("CLS");
+						}else{
+							break;
+						}
+	                }
                     system("CLS");
                     cout << "¡Producto modificado con éxito!" << endl;
                     break;
                 case 4:
-                    cout << "Nueva cantidad: ";
-                    cin >> items[i].cantidad;
+                	while(true){
+	                    cout << "Nueva cantidad: ";
+	                    cin >> items[i].cantidad;
+	                    if(items[i].cantidad < 1){
+                    		cout << "Has ingresado un valor inválido... Intenta de nuevo.";
+                    		getch();
+                    		system("CLS");
+						}else{
+							break;
+						}
+	                }
                     system("CLS");
                     cout << "¡Producto modificado con éxito!" << endl;
                     break;
                 case 5:
                     cout << "Nuevo día de compra: ";
                     cin >> items[i].diaCom;
-                    cout << "Nuevo mes de compra: ";
-                    cin >> items[i].mesCom;
-                    cout << "Nuevo año de compra: ";
-                    cin >> items[i].anoCom;
-                    system("CLS");
-                    cout << "¡Producto modificado con éxito!" << endl;
-                    break;
+                    while(true){
+	                    if(items[i].diaCom > 31 || items[i].diaCom < 1){
+	                    	cout << "Esta fecha no es válida... Intenta nuevamente.";
+	                    	getch();
+	                    	system("CLS");
+						}else{
+							break;
+						}
+					}
+					while(true){
+                    	cout << "Nuevo mes de compra: ";
+                    	cin >> items[i].mesCom;
+                    	if(items[i].mesCom > 12 || items[i].mesCom < 1){
+                    		cout << "Esta fecha no es válida... Intenta nuevamente.";
+                    		getch();
+                    		system("CLS");
+						}else{
+							break;
+						}	
+					}
+					while(true){
+	                    cout << "Nuevo año de compra: ";
+	                    cin >> items[i].anoCom;
+	                    if(items[i].anoCom < 1){
+	                    	cout << "Esta fecha no es válida... Intenta nuevamente.";
+	                    	getch();
+	                    	system("CLS");
+						}else{
+							break;
+						}
+					}
+	                system("CLS");
+	                cout << "¡Producto modificado con éxito!" << endl;
+	                break;
                 case 6:
-                    cout << "Nuevo día de caducidad: ";
-                    cin >> items[i].diaCom;
-                    cout << "Nuevo mes de caducidad: ";
-                    cin >> items[i].mesCom;
-                    cout << "Nuevo año de caducidad: ";
-                    cin >> items[i].anoCom;
+                	while(true){
+                    	cout << "Nuevo día de caducidad: ";
+                    	cin >> items[i].diaCad;
+                    	if(items[i].diaCad > 31 || items[i].diaCad < 1){
+                    		cout << "Esta fecha no es válida... Intenta nuevamente.";
+                    		getch();
+                    		system("CLS");
+						}else{
+							break;
+						}
+                	}
+                	while(true){
+                    	cout << "Nuevo mes de caducidad: ";
+                    	cin >> items[i].mesCad;
+                    	if(items[i].mesCad > 12 || items[i].mesCad < 1){
+                    		cout << "Esta fecha no es válida... Intenta nuevamente.";
+                    		getch();
+                    		system("CLS");
+						}else{
+							break;
+						}
+                    }
+                    while(true){
+	                    cout << "Nuevo año de caducidad: ";
+	                    cin >> items[i].anoCad;
+	                    if(items[i].anoCad < 1){
+                    		cout << "Esta fecha no es válida... Intenta nuevamente.";
+                    		getch();
+                    		system("CLS");
+						}else{
+							break;
+						}
+	                }
                     system("CLS");
                     cout << "¡Producto modificado con éxito!" << endl;
                     break;
