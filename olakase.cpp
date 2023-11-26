@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <sstream>
 #include <limits>
-
+#include <ctime>
 
 using namespace std;
 struct products { //Creamos la estructura de los productos que vamos a ingresar.
@@ -29,7 +29,7 @@ void listProduct(products items [], int acum); //funcion de listar productos.
 void modProduct(products items [], int acum); //funcion de modificar productos.
 void consuProduct(products items [], int acum); //funcion de consumir productos.
 void checker(); //funcion para revisar archivo de guardado.
-
+bool checkCaducidad(int anoCad, int mesCad, int diaCad); //funcion para revisar si un producto caducó.
 
 int main() {
 	checker();
@@ -106,7 +106,6 @@ int addProduct(products items[], int acum) {
 		cout << "\nProducto #" << iteracion + 1 << ":\n\n";
         cout << "\nIngresa el NOMBRE del producto:  ";
         cin >> nombreTemp;
-
         cout << "\nIngresa la CATEGORÍA del producto:  ";
         cin >> categoriaTemp;
 
@@ -201,8 +200,26 @@ int addProduct(products items[], int acum) {
     return acum;
 }
 
+bool checkCaducidad(int anoCad, int mesCad, int diaCad) {
+    time_t t = time(0);
+    struct tm* now = localtime(&t);
+
+    int currentYear = now->tm_year + 1900;
+    int currentMonth = now->tm_mon + 1;
+    int currentDay = now->tm_mday;				// cuadramos la fecha actual
+
+    if (anoCad < currentYear ||
+        (anoCad == currentYear && mesCad < currentMonth) ||
+        (anoCad == currentYear && mesCad == currentMonth && diaCad < currentDay)) { // no caducado
+        return false;
+    } else {
+        return true;																// caducado
+    }
+}
+
 void listProduct(products items [], int acum){
 	//cout << acum;
+	string val;
 	if(acum == 0){
 		system("CLS");
 		cout << "¡Aún no has agregado ningún producto!";
@@ -211,6 +228,11 @@ void listProduct(products items [], int acum){
 		return;
 	}
 	for (int i = 0; i < acum; i++){
+		if (checkCaducidad(items[i].anoCad, items[i].mesCad, items[i].diaCad)){
+			val = "Producto APTO para consumo.";
+		}else{
+			val = "Producto NO APTO para consumo.";
+		}
 		cout << "\nProducto #" << i+1 << endl;
 		cout << "Nombre: " << items[i].nombre << endl;
 		cout << "Categoria: " << items[i].categoria << endl;
@@ -218,6 +240,7 @@ void listProduct(products items [], int acum){
 		cout << "Cantidad: " << items[i].cantidad << endl;
 		cout <<	"Fecha de compra: " << items[i].diaCom << "/" << items[i].mesCom << "/" << items[i].anoCom << endl;
 		cout <<	"Fecha de caducidad: " << items[i].diaCad << "/" << items[i].mesCad << "/" << items[i].anoCad << endl;
+		cout << "Apto para consumo: " << val << endl;
 		cout << "------------------//--------------------\n\n\n";
 	}
 	cout << "Presione enter para volver al menú principal...";
@@ -259,18 +282,26 @@ void modProduct(products items [], int acum) {
                 case 1:
                     cout << "Nuevo nombre: ";
                     cin >> items[i].nombre;
+                    system("CLS");
+                    cout << "¡Producto modificado con éxito!" << endl;
                     break;
                 case 2:
                     cout << "Nueva categoría: ";
                     cin >> items[i].categoria;
+                    system("CLS");
+                    cout << "¡Producto modificado con éxito!" << endl;
                     break;
                 case 3:
                     cout << "Nuevo precio: ";
                     cin >> items[i].precio;
+                    system("CLS");
+                    cout << "¡Producto modificado con éxito!" << endl;
                     break;
                 case 4:
                     cout << "Nueva cantidad: ";
                     cin >> items[i].cantidad;
+                    system("CLS");
+                    cout << "¡Producto modificado con éxito!" << endl;
                     break;
                 case 5:
                     cout << "Nuevo día de compra: ";
@@ -279,6 +310,8 @@ void modProduct(products items [], int acum) {
                     cin >> items[i].mesCom;
                     cout << "Nuevo año de compra: ";
                     cin >> items[i].anoCom;
+                    system("CLS");
+                    cout << "¡Producto modificado con éxito!" << endl;
                     break;
                 case 6:
                     cout << "Nuevo día de caducidad: ";
@@ -287,6 +320,8 @@ void modProduct(products items [], int acum) {
                     cin >> items[i].mesCom;
                     cout << "Nuevo año de caducidad: ";
                     cin >> items[i].anoCom;
+                    system("CLS");
+                    cout << "¡Producto modificado con éxito!" << endl;
                     break;
                 case 0:
                 	system("CLS");
@@ -299,10 +334,10 @@ void modProduct(products items [], int acum) {
 
     if (!encontrado) {
         cout << "Producto no encontrado." << endl;
-        cout << "Presione enter para volver al menú principal...";
-        getch();
-		system("CLS");
     }
+    cout << "Presione enter para volver al menú principal...";
+    getch();
+	system("CLS");
 }
 
 void consuProduct(products items [], int acum) {
