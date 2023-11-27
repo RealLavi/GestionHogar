@@ -30,8 +30,11 @@ void modProduct(products items [], int acum); //funcion de modificar productos.
 int consuProduct(products items [], int acum); //funcion de consumir productos.
 void checker(); //funcion para revisar archivo de guardado.
 bool checkCaducidad(int anoCad, int mesCad, int diaCad); //funcion para revisar si un producto caducï¿½.
+void logo();
 
 int main() {
+	logo();
+	system("CLS");
 	checker();
 	setlocale(LC_ALL, "");
 	products items [9999]; //iniciamos muchos espacios en memoria
@@ -41,7 +44,8 @@ int main() {
 		cout << "1.\t Añadir un nuevo mercado.\n";
 		cout << "2.\t Listar productos existentes.\n";
 		cout << "3.\t Modificar un producto.\n";
-		cout << "4.\t Consumir un producto.\n\n";
+		cout << "4.\t Consumir un producto.\n";
+		cout << "0.\t Salir.\n\n";
 		cout << "Ingrese la opción deseada:  ";
 		cin >> menuOpt;
 		switch (menuOpt){ //revisamos la entrada
@@ -62,6 +66,9 @@ int main() {
     			system("CLS");
 				acum = consuProduct(items, acum);
 				break;
+			case 0:
+				system("CLS");
+				exit(0);
 			default:
 				cout << "Por favor, ingresa una opción válida...";
 				getch();
@@ -270,7 +277,7 @@ int addProduct(products items[], int acum) {
         }
 
 		//el fprintf siguiente se debe actualizar con los nuevos inputs.
-        cout << "¿Desea agregar otro producto? (1 para Si, 0 para no): ";
+        cout << "¿Desea agregar otro producto? (1 para Si): ";
         if (!(cin >> exit) || (cin.peek() != '\n') || exit != 1) {
         	system("CLS");
             continuar = false;
@@ -685,4 +692,55 @@ int consuProduct(products items [], int acum) {
     getch();
     system("CLS");
     return acum;
+}
+
+void logo(){
+	cout << "                                                                    %       \n" ;                                                  
+    cout << "                                           &           @           (          \n"  ;                                  
+    cout << "                                              @          @          #                   \n"  ;                           
+    cout << "                                               @         (        ,%             \n"  ;                                    
+    cout << "                                    %           #.       *       (&           @     \n"  ;                                 
+    cout << "                                      @*         **     ..      %&         #%    \n"  ;                                    
+    cout << "                                        #%        .%    / .    &#       .(.     \n"  ;                                     
+    cout << "                                          .*@       &   & ,   #/      %%              \n"  ;                               
+    cout << "                             /@/             %.(   , &  # &  **    & &             (@,      \n"  ;                         
+    cout << "                                   @*@.        @ (  * / @ (  .  *. /        *@/&               \n";                     
+    cout << "                       ,.  /&    #(     #( (@(%( *. &( ,% @  ,# (  %(#@/ %/    ,,&  , &#  .*   \n" ;                    
+    cout << "                       .*,@%. (,//.,/  ,% %/ *&  .##(%       /@%/  ,@* %*.&   %.,*,/#..(%,*/   \n"  ;                   
+    cout << "                        /%@., @@%@@,( &@*@(*.&(%&#(@,         #@##%(.%/.#&/@* (*@@#@@   /*#    \n"   ;                  
+    cout << "                       (/*%/  /&,/* ( ./@&,, &,#*(((,         #%((*&.#*.*@@,( ...#(&*  ((  /  \n"     ;                 
+    cout << "                       &/%*.,,*/,(   # *&%((//,#/%.* &       % #,((/,//(/@/(,(*  **&/ . //.#  \n"      ;                
+    cout << "                       #(%    #.@*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ( @  ..@&*   \n"      ;               
+    cout << "                       (#(@(#  &#&,                      @        ,@@%.         #&%@  */@*%*    \n"      ;              
+    cout << "                       *&./  #@@#(, @@#@@,%.(@%,.@%@@(@  @      @@@@@@@@@(      #(@@@# ,& /,     \n"      ;             
+    cout << "                       @((/#/(/%#/, @*,@.(##*. ((#/&% &  @     @/, .*.@@@@,     #.,%((/*,(#(      \n"      ;            
+    cout << "                      #*,#.*#%  *%, @@/@ @@% @.(@@ &@@@  @     (*. ,## .@#      #/#  %%##//,/      \n"      ;           
+    cout << "                       *&%(##/ . *, @@(@ /@@@@@@@( &@#@  @     .   ,    &*      # ,  (((#/@#        \n"      ;          
+    cout << "                       (&. ,*# ( *, @&&@   &&@/@   &@,@  @      ,,*.*  .@       #    #*. ,@.         \n"      ;         
+    cout << "                      @ ..&.#* .#@, @@&@,&%%*@(**%&&@@@  @      %..   /,(@.     #@#  #* ((.,&         \n"      ;        
+    cout << "                      &/(%./ .  @#, &@@ %  * &  / ,&*(@  @    (@@* /# (@&@@@@.  #(%  . //@/,#          \n"      ;       
+    cout << "                       &%*@@&&/ &*,  @@**@@**(@@@@& @@   @   &@@%.##*@@ @@&@@@* #*( (*@#&,@&            \n"      ;      
+    cout << "                        .*&%%// .*,          @*          @  @@@@@  (@% @@@#@@@* # #.&(#(#*              \n"       ;     
+    cout << "                        %,, **#/ &*......................@......................#&  ./,,#,(             \n"        ;    
+    cout << "                         ,. //,  %,                      @                      #%# .*. ,,#             \n"         ;   
+    cout << "                       (/.   %/&,@,        / ./          @          #@/ #@      #%(&&**,.#/,            \n"          ;  
+    cout << "                     %%#&*%   ((@/(        .. .          @        @@      @     @*&(.. .((#/&&(         \n"           ; 
+    cout << "                    @#&. % .,((%%%@    ( . (** , /#      @       @(       #     @%/,.***., (&%%         \n"            ;
+    cout << "                         %.% ,.,*(#(                     @      @&     ..%//(  &(%# *#*/.%              \n"            ;
+    cout << "                         #*.*. #.&#&*         ,,.,       @  @(,%@       @@    %&(%,**,(#*%              \n"            ;
+    cout << "                      #%   % **/ .#(@#                   @     (@      @@    @&%&. (,. &  .#*           \n"            ;
+    cout << "                       ,.  *# .    .,%@    (%#(*%,  (#.* @      @@   @@    *(%/      .    .(            \n"            ;
+    cout << "                     ..%%%(*,/((.,  % .#@/               @               %&(*%  . */#% &%&&/*           \n"            ;
+    cout << "                      %%,. ./(#(,/(% ,# %@#@&            @           .@@/@# *  #(*.,%&,  .*(,          \n"             ;
+    cout << "                        (        #/(/  **@@, % @(@@(,    @    *%@@#% @.,%# .  */.*       *%            \n"             ;
+    cout << "                                #**.#*(  &/   ,(#%  ..#/%(&/#,   #&(*./ &#, %*%*,(%                    \n"             ;
+    cout << "                                 ,@..%, ../,,. %  /  &  (,  %.# # ,&  / #,. ,/ *@*                     \n"             ;
+    cout << "                            ./*          #/(&%&%##*   * (   ,, .*%#@&%@*,%          */                  \n"            ;
+    cout << "                           / /.(.   **      ,/#/#%*.   ,./* *  .*%#(((.      /,  #  (  .                 \n"           ;
+    cout << "                           ,  ,/.  /(/  ,/.( , . /,   /.(.#(.  (/, &,/.(. # * (  (.  &                   \n"          ;
+    cout << "                              %   (  # % , / ( */                /#. /*  . * #  #   *                    \n"           ;
+    cout << "                              .      /,   .(*                    *    */    *,      /                    \n"           ;
+    cout << "                                 .//     #                               *     (*.                       \n"           ;
+    cout << "                                      .. .,                             .  .                           \n"             ;
+cin.ignore();
 }
