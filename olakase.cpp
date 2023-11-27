@@ -27,9 +27,9 @@ struct products { //Creamos la estructura de los productos que vamos a ingresar.
 int addProduct(products items [], int acum); //funcion de añadir productos.
 void listProduct(products items [], int acum); //funcion de listar productos.
 void modProduct(products items [], int acum); //funcion de modificar productos.
-void consuProduct(products items [], int acum); //funcion de consumir productos.
+int consuProduct(products items [], int acum); //funcion de consumir productos.
 void checker(); //funcion para revisar archivo de guardado.
-bool checkCaducidad(int anoCad, int mesCad, int diaCad); //funcion para revisar si un producto caducó.
+bool checkCaducidad(int anoCad, int mesCad, int diaCad); //funcion para revisar si un producto caducï¿½.
 
 int main() {
 	checker();
@@ -60,19 +60,42 @@ int main() {
 				break;
 			case 4:
     			system("CLS");
-				consuProduct(items, acum);
+				acum = consuProduct(items, acum);
 				break;
 			default:
 				cout << "Por favor, ingresa una opción válida...";
 				getch();
 				system("CLS");
+				cin.clear();
+        		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				break;
 		}
 	}
 	return 0;
 }
 
+//	string nombre, string categoria, int cantidad, int precio, 
+//	int diaCom, int mesCom, int anoCom, int diaCad, int mesCad, 
+//	int anoCad, int iteracion, global int acum
+/*
+void saver(Product items [], int acum) {
+	string savedText;
+    FILE* file = fopen("database.txt", "w");
 
+    if (file == nullptr) {
+        std::cerr << "Error al abrir el archivo database.txt para escritura.\n";
+        return;
+    }
+    fprintf(file, "%d\n", acum);
+    for (int i = 0; i < acum; i++) {
+        fprintf(file, "%s %s %d %d %d %d %d %d %d %d\n", items[i].nombre.c_str(), items[i].categoria.c_str(),
+                items[i].cantidad, items[i].precio, items[i].diaCom, items[i].mesCom, items[i].anoCom,
+                items[i].diaCad, items[i].mesCad, items[i].anoCad);
+    }
+
+    fclose(file);
+}
+*/
 void checker() {
     FILE *file = fopen("database.txt", "a");
     if (file == NULL) {
@@ -89,15 +112,17 @@ int addProduct(products items[], int acum) {
     bool continuar = true;
     string nombreTemp, categoriaTemp;
     int iteracion = 0, cantidadTemp, precioTemp, diaComTemp, mesComTemp, anoComTemp, diaCadTemp, mesCadTemp, anoCadTemp, exit = 1, precioAcum = 0;
-    products itemsTemp [999];
+    string answerTemp;
+	products itemsTemp [999];
     FILE *file = fopen("database.txt", "a");
 	cout << "\n#####  Has seleccionado 'Añadir nuevo mercado'  #####" << endl << endl;
     cout << "\nPara comenzar, indica la fecha de compra del mercado:  \n";
     while(true){
        	cout << "---Dia: ";
-       	cin >> diaComTemp;
-       	if(diaComTemp < 1 || diaComTemp > 31){
+       	if(!(cin >> diaComTemp) || (cin.peek() != '\n') || diaComTemp < 1 || diaComTemp > 31){
        		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+       		cin.clear();
+        	cin.ignore(numeric_limits<streamsize>::max(), '\n');
        		getch();
        		system("CLS");
 		}else{
@@ -106,9 +131,10 @@ int addProduct(products items[], int acum) {
     }
     while(true){
        	cout << "---Mes: ";
-       	cin >> mesComTemp;
-       	if(mesComTemp < 1 || mesComTemp > 12){
+       	if(!(cin >> mesComTemp) || (cin.peek() != '\n') || mesComTemp < 1 || mesComTemp > 12){
        		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+       		cin.clear();
+        	cin.ignore(numeric_limits<streamsize>::max(), '\n');
        		getch();
        		system("CLS");
 		}else{
@@ -117,9 +143,10 @@ int addProduct(products items[], int acum) {
     }
        while(true){
        	cout << "---Año: ";
-       	cin >> anoComTemp;
-       	if(anoComTemp < 1){
+       	if(!(cin >> anoComTemp) || (cin.peek() != '\n') || anoComTemp < 1){
        		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+       		cin.clear();
+        	cin.ignore(numeric_limits<streamsize>::max(), '\n');
        		getch();
        		system("CLS");
 		}else{
@@ -131,19 +158,20 @@ int addProduct(products items[], int acum) {
 		cout << "\nProducto #" << iteracion + 1 << ":\n\n";
         cout << "\nIngresa el NOMBRE del producto:  ";
         cin >> nombreTemp;
-        for (size_t i = 0; i < nombreTemp.length(); ++i) { //pasamos el nombre a minuscula para prevenir errores.
+        for (size_t i = 0; i < nombreTemp.length(); ++i) { //pasamos el nombre a minúscula para prevenir errores.
         	nombreTemp[i] = tolower(nombreTemp[i]);
     	}
         cout << "\nIngresa la CATEGORÍA del producto:  ";
         cin >> categoriaTemp;
-        for (size_t i = 0; i < categoriaTemp.length(); ++i) { //pasamos el nombre a minuscula para prevenir errores.
+        for (size_t i = 0; i < categoriaTemp.length(); ++i) { //pasamos el nombre a minúscula para prevenir errores.
         	categoriaTemp[i] = tolower(categoriaTemp[i]);
     	}
         while(true){
         	cout << "\nIngresa la CANTIDAD de productos:  ";
-        	cin >> cantidadTemp;
-        	if(cantidadTemp < 1){
+        	if(!(cin >> cantidadTemp) || (cin.peek() != '\n') || cantidadTemp < 1){
         		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+        		cin.clear();
+        		cin.ignore(numeric_limits<streamsize>::max(), '\n');
         		getch();
         		system("CLS");
 			}else{
@@ -152,9 +180,10 @@ int addProduct(products items[], int acum) {
         }
         while(true){
 	        cout << "\nIndica el PRECIO del producto:  $";
-	        cin >> precioTemp;
-	        if(precioTemp < 1){
+	        if(!(cin >> precioTemp) || (cin.peek() != '\n') || precioTemp < 1){
         		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+        		cin.clear();
+        		cin.ignore(numeric_limits<streamsize>::max(), '\n');
         		getch();
         		system("CLS");
 			}else{
@@ -164,9 +193,10 @@ int addProduct(products items[], int acum) {
         cout << "\nIndica la FECHA DE CADUCIDAD del producto:  \n";
         while(true){
         	cout << "---Dia: ";
-        	cin >> diaCadTemp;
-        	if(diaCadTemp < 1 || diaCadTemp > 31){
+        	if(!(cin >> diaCadTemp) || (cin.peek() != '\n') || diaCadTemp < 1 || diaCadTemp > 31){
         		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+        		cin.clear();
+        		cin.ignore(numeric_limits<streamsize>::max(), '\n');
         		getch();
         		system("CLS");
 			}else{
@@ -175,9 +205,10 @@ int addProduct(products items[], int acum) {
     	}
     	while(true){
         	cout << "---Mes: ";
-        	cin >> mesCadTemp;
-        	if(mesCadTemp < 1 || mesCadTemp > 12){
+        	if(!(cin >> mesCadTemp) || (cin.peek() != '\n') || mesCadTemp < 1 || mesCadTemp > 12){
         		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+        		cin.clear();
+        		cin.ignore(numeric_limits<streamsize>::max(), '\n');
         		getch();
         		system("CLS");
 			}else{
@@ -186,9 +217,10 @@ int addProduct(products items[], int acum) {
     	}
         while(true){
         	cout << "---Año: ";
-        	cin >> anoCadTemp;
-        	if(anoCadTemp < 1){
+        	if(!(cin >> anoCadTemp) || (cin.peek() != '\n') || anoCadTemp < 1){
         		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+        		cin.clear();
+        		cin.ignore(numeric_limits<streamsize>::max(), '\n');
         		getch();
         		system("CLS");
 			}else{
@@ -238,10 +270,9 @@ int addProduct(products items[], int acum) {
         }
 
 		//el fprintf siguiente se debe actualizar con los nuevos inputs.
-        cout << "¿Desea agregar otro producto? (1 para Sí, 0 para No): ";
+        cout << "¿Desea agregar otro producto? (1 para Si, 0 para no): ";
         cin >> exit;
-
-        if (exit != 1) {
+        if (!(cin >> exit) || (cin.peek() != '\n') || exit != 1) {
         	system("CLS");
             continuar = false;
             //mostrar resumen de productos añadidos.
@@ -249,7 +280,7 @@ int addProduct(products items[], int acum) {
             for (int i = 0; i <= iteracion; i++){
 	            cout << "\n\t ** Producto #" << i+1 << endl;
 				cout << "Nombre: " << itemsTemp[i].nombre << endl;
-				cout << "Categoria: " << itemsTemp[i].categoria << endl;
+				cout << "Categoría: " << itemsTemp[i].categoria << endl;
 				cout <<	"Precio: " << itemsTemp[i].precio << endl;
 				cout << "Cantidad: " << itemsTemp[i].cantidad << endl;
 				cout <<	"Fecha de caducidad: " << itemsTemp[i].diaCad << "/" << itemsTemp[i].mesCad << "/" << itemsTemp[i].anoCad << endl;
@@ -259,7 +290,6 @@ int addProduct(products items[], int acum) {
 			cout << "------------------//--------------------\n\n\n";
 			cout << "Presione enter para volver al menú principal...";
 			cin.ignore();
-			
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			system("CLS");
         }
@@ -292,70 +322,30 @@ bool checkCaducidad(int anoCad, int mesCad, int diaCad) {
 void listProduct(products items [], int acum){
 	//cout << acum;
 	string val;
+	char opcion;
 	cout << "\n1. Consultar todos los productos existentes.\n";
     cout << "2. Consultar productos por fecha de vencimiento. \n";
     cout << "0. Volver al menú principal.\n\n";
-	int opcion, diaTemp, mesTemp, anoTemp;
-	
+	int diaTemp, mesTemp, anoTemp;
     cout << "Seleccione una opción:  ";
     cin >> opcion;
-    
-    if (opcion == 1){
-		if(acum == 0){
-			system("CLS");
-			cout << "¡Aún no has agregado ningún producto!";
-			getch();
-			system("CLS");
-			return;
-		}
-		for (int i = 0; i < acum; i++){
-			if (checkCaducidad(items[i].anoCad, items[i].mesCad, items[i].diaCad)){
-				val = "Producto APTO para consumo.";
-			}else{
-				val = "Producto NO APTO para consumo.";
+	    if (opcion == '1'){
+			if(acum == 0){
+				system("CLS");
+				cout << "¡Aún no has ingresado ningún producto!";
+				getch();
+				system("CLS");
+				return;
 			}
-			cout << "\n\t ** Producto #" << i+1 << endl;
-			cout << "Nombre: " << items[i].nombre << endl;
-			cout << "Categoria: " << items[i].categoria << endl;
-			cout <<	"Precio: " << items[i].precio << endl;
-			cout << "Cantidad: " << items[i].cantidad << endl;
-			cout <<	"Fecha de compra: " << items[i].diaCom << "/" << items[i].mesCom << "/" << items[i].anoCom << endl;
-			cout <<	"Fecha de caducidad: " << items[i].diaCad << "/" << items[i].mesCad << "/" << items[i].anoCad << endl;
-			cout << "Apto para consumo: " << val << endl;
-			cout << "------------------//--------------------\n\n\n";
-		}
-		cout << "Presione enter para volver al menú principal...";
-		getch();
-	    system("CLS");
-	}
-	else if (opcion == 2){
-		if(acum == 0){
-			system("CLS");
-			cout << "¡Aún no has agregado ningún producto!";
-			getch();
-			system("CLS");
-			return;
-		}
-		system("CLS");
-		cout << "\nPor favor ingrese la fecha de caducidad que desea buscar:  \n";
-		cout << "---Dia: ";
-		cin >> diaTemp;
-		cout << "---Mes: ";
-		cin >> mesTemp;
-		cout << "---Año: ";
-		cin >> anoTemp;
-		system("CLS");
-		for (int i = 0; i < acum; i++){
-			if (diaTemp == items[i].diaCad && mesTemp == items[i].mesCad && anoTemp == items[i].anoCad){
+			for (int i = 0; i < acum; i++){
 				if (checkCaducidad(items[i].anoCad, items[i].mesCad, items[i].diaCad)){
 					val = "Producto APTO para consumo.";
-				}
-				else{
+				}else{
 					val = "Producto NO APTO para consumo.";
 				}
 				cout << "\n\t ** Producto #" << i+1 << endl;
 				cout << "Nombre: " << items[i].nombre << endl;
-				cout << "Categoria: " << items[i].categoria << endl;
+				cout << "Categoría: " << items[i].categoria << endl;
 				cout <<	"Precio: " << items[i].precio << endl;
 				cout << "Cantidad: " << items[i].cantidad << endl;
 				cout <<	"Fecha de compra: " << items[i].diaCom << "/" << items[i].mesCom << "/" << items[i].anoCom << endl;
@@ -363,18 +353,88 @@ void listProduct(products items [], int acum){
 				cout << "Apto para consumo: " << val << endl;
 				cout << "------------------//--------------------\n\n\n";
 			}
+			cout << "Presione enter para volver al menú principal...";
+			getch();
+		    system("CLS");
 		}
+		else if (opcion == '2'){
+			if(acum == 0){
+				system("CLS");
+				cout << "¡Aún no has ingresado ningún producto!";
+				getch();
+				system("CLS");
+				return;
+			}
+			system("CLS");
+			cout << "\nPor favor ingrese la fecha de caducidad que desea buscar:  \n";
+			while(true){
+        	cout << "---Dia: ";
+        	if(!(cin >> diaTemp) || (cin.peek() != '\n') || diaTemp < 1 || diaTemp > 31){
+        		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+        		cin.clear();
+        		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        		getch();
+        		system("CLS");
+			}else{
+				break;
+			}
+	    	}
+	    	while(true){
+	        	cout << "---Mes: ";
+	        	if(!(cin >> mesTemp) || (cin.peek() != '\n') || mesTemp < 1 || mesTemp > 12){
+	        		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+	        		cin.clear();
+	        		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	        		getch();
+	        		system("CLS");
+				}else{
+					break;
+				}
+	    	}
+	        while(true){
+	        	cout << "---Año: ";
+	        	if(!(cin >> anoTemp) || (cin.peek() != '\n') || anoTemp < 1){
+	        		cout << "Has ingresado una cantidad inválida... Por favor, intenta nuevamente.";
+	        		cin.clear();
+	        		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	        		getch();
+	        		system("CLS");
+				}else{
+					break;
+				}
+	    	}
+			system("CLS");
+			for (int i = 0; i < acum; i++){
+				if (diaTemp == items[i].diaCad && mesTemp == items[i].mesCad && anoTemp == items[i].anoCad){
+					if (checkCaducidad(items[i].anoCad, items[i].mesCad, items[i].diaCad)){
+						val = "Producto APTO para consumo.";
+					}
+					else{
+						val = "Producto NO APTO para consumo.";
+					}
+					cout << "\n\t ** Producto #" << i+1 << endl;
+					cout << "Nombre: " << items[i].nombre << endl;
+					cout << "Categoria: " << items[i].categoria << endl;
+					cout <<	"Precio: " << items[i].precio << endl;
+					cout << "Cantidad: " << items[i].cantidad << endl;
+					cout <<	"Fecha de compra: " << items[i].diaCom << "/" << items[i].mesCom << "/" << items[i].anoCom << endl;
+					cout <<	"Fecha de caducidad: " << items[i].diaCad << "/" << items[i].mesCad << "/" << items[i].anoCad << endl;
+					cout << "Apto para consumo: " << val << endl;
+					cout << "------------------//--------------------\n\n\n";
+				}
+			}
+		}
+		cout << "Has ingresado una cantidad inválida...\n";
 		cout << "Presione enter para volver al menú principal...";
 		getch();
-	    system("CLS");	
-	}	
+		system("CLS");	
 }
 	
 
 void modProduct(products items [], int acum) {
 	if(acum == 0){
 		system("CLS");
-		cout << "¡Aún no has agregado ningún producto!";
+		cout << "¡Aún no has ingresado ningún producto!";
 		cout << "Presione enter para volver al menú principal...";
 		getch();
 		system("CLS");
@@ -412,7 +472,7 @@ void modProduct(products items [], int acum) {
         				items[i].nombre[j] = tolower(items[i].nombre[j]);
    					}
                     system("CLS");
-                    cout << "¡Producto modificado con éxito!" << endl;
+                    cout << "¿Producto modificado con éxito!" << endl;
                     break;
                 case 2:
                     cout << "Nueva categoría: ";
@@ -421,14 +481,15 @@ void modProduct(products items [], int acum) {
         				items[i].categoria[j] = tolower(items[i].categoria[j]);
    					}
                     system("CLS");
-                    cout << "¡Producto modificado con éxito!" << endl;
+                    cout << "¿Producto modificado con éxito!" << endl;
                     break;
                 case 3:
                 	while(true){
 	                    cout << "Nuevo precio: ";
-	                    cin >> items[i].precio;
-	                    if(items[i].precio < 1){
+	                    if(!(cin >> items[i].precio) || (cin.peek() != '\n') || items[i].precio < 1){
                     		cout << "Has ingresado un valor inválido... Intenta de nuevo.";
+                    		cin.clear();
+        					cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     		getch();
                     		system("CLS");
 						}else{
@@ -436,14 +497,15 @@ void modProduct(products items [], int acum) {
 						}
 	                }
                     system("CLS");
-                    cout << "¡Producto modificado con éxito!" << endl;
+                    cout << "¿Producto modificado con éxito!" << endl;
                     break;
                 case 4:
                 	while(true){
 	                    cout << "Nueva cantidad: ";
-	                    cin >> items[i].cantidad;
-	                    if(items[i].cantidad < 1){
+	                    if(!(cin >> items[i].cantidad) || (cin.peek() != '\n') || items[i].cantidad < 1){
                     		cout << "Has ingresado un valor inválido... Intenta de nuevo.";
+                    		cin.clear();
+        					cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     		getch();
                     		system("CLS");
 						}else{
@@ -451,14 +513,15 @@ void modProduct(products items [], int acum) {
 						}
 	                }
                     system("CLS");
-                    cout << "¡Producto modificado con éxito!" << endl;
+                    cout << "¿Producto modificado con éxito!" << endl;
                     break;
                 case 5:
                     cout << "Nuevo día de compra: ";
-                    cin >> items[i].diaCom;
                     while(true){
-	                    if(items[i].diaCom > 31 || items[i].diaCom < 1){
+	                    if(!(cin >> items[i].diaCom) || (cin.peek() != '\n') || items[i].diaCom > 31 || items[i].diaCom < 1){
 	                    	cout << "Esta fecha no es válida... Intenta nuevamente.";
+	                    	cin.clear();
+        					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	                    	getch();
 	                    	system("CLS");
 						}else{
@@ -467,9 +530,10 @@ void modProduct(products items [], int acum) {
 					}
 					while(true){
                     	cout << "Nuevo mes de compra: ";
-                    	cin >> items[i].mesCom;
-                    	if(items[i].mesCom > 12 || items[i].mesCom < 1){
+                    	if(!(cin >> items[i].mesCom) || (cin.peek() != '\n') || items[i].mesCom > 12 || items[i].mesCom < 1){
                     		cout << "Esta fecha no es válida... Intenta nuevamente.";
+                    		cin.clear();
+        					cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     		getch();
                     		system("CLS");
 						}else{
@@ -478,9 +542,10 @@ void modProduct(products items [], int acum) {
 					}
 					while(true){
 	                    cout << "Nuevo año de compra: ";
-	                    cin >> items[i].anoCom;
-	                    if(items[i].anoCom < 1){
+	                    if(!(cin >> items[i].anoCom) || (cin.peek() != '\n') || items[i].anoCom < 1){
 	                    	cout << "Esta fecha no es válida... Intenta nuevamente.";
+	                    	cin.clear();
+        					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	                    	getch();
 	                    	system("CLS");
 						}else{
@@ -488,14 +553,15 @@ void modProduct(products items [], int acum) {
 						}
 					}
 	                system("CLS");
-	                cout << "¡Producto modificado con éxito!" << endl;
+	                cout << "¿Producto modificado con éxito!" << endl;
 	                break;
                 case 6:
                 	while(true){
                     	cout << "Nuevo día de caducidad: ";
-                    	cin >> items[i].diaCad;
-                    	if(items[i].diaCad > 31 || items[i].diaCad < 1){
+                    	if(!(cin >> items[i].diaCad) || (cin.peek() != '\n') || items[i].diaCad > 31 || items[i].diaCad < 1){
                     		cout << "Esta fecha no es válida... Intenta nuevamente.";
+                    		cin.clear();
+        					cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     		getch();
                     		system("CLS");
 						}else{
@@ -504,9 +570,10 @@ void modProduct(products items [], int acum) {
                 	}
                 	while(true){
                     	cout << "Nuevo mes de caducidad: ";
-                    	cin >> items[i].mesCad;
-                    	if(items[i].mesCad > 12 || items[i].mesCad < 1){
+                    	if(!(cin >> items[i].mesCad) || (cin.peek() != '\n') || items[i].mesCad > 12 || items[i].mesCad < 1){
                     		cout << "Esta fecha no es válida... Intenta nuevamente.";
+                    		cin.clear();
+        					cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     		getch();
                     		system("CLS");
 						}else{
@@ -515,9 +582,10 @@ void modProduct(products items [], int acum) {
                     }
                     while(true){
 	                    cout << "Nuevo año de caducidad: ";
-	                    cin >> items[i].anoCad;
-	                    if(items[i].anoCad < 1){
+	                    if(!(cin >> items[i].anoCad) || (cin.peek() != '\n') || items[i].anoCad < 1){
                     		cout << "Esta fecha no es válida... Intenta nuevamente.";
+                    		cin.clear();
+        					cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     		getch();
                     		system("CLS");
 						}else{
@@ -525,13 +593,15 @@ void modProduct(products items [], int acum) {
 						}
 	                }
                     system("CLS");
-                    cout << "¡Producto modificado con éxito!" << endl;
+                    cout << "¿Producto modificado con éxito!" << endl;
                     break;
                 case 0:
                 	system("CLS");
                     break;
                 default:
                     cout << "Opción no válida.";
+                    cin.clear();
+        			cin.ignore(numeric_limits<streamsize>::max(), '\n');
             }
         }
     }
@@ -544,14 +614,14 @@ void modProduct(products items [], int acum) {
 	system("CLS");
 }
 
-void consuProduct(products items [], int acum) {
+int consuProduct(products items [], int acum) {
 	if(acum == 0){
 		system("CLS");
-		cout << "¡Aún no has agregado ningún producto!";
+		cout << "¡Aún no has ingresado ningún producto!";
 		cout << "Presione enter para volver al menú principal...";
 		getch();
 		system("CLS");
-		return;
+		return acum;
 	}
     string nombreBuscar;
     cout << "Ingrese el nombre del producto que desea consumir: ";
@@ -573,14 +643,36 @@ void consuProduct(products items [], int acum) {
 
             int cantidadConsumir;
             cout << "Ingrese la cantidad que desea consumir: ";
-            cin >> cantidadConsumir;
-
-            if (cantidadConsumir > 0 && cantidadConsumir <= items[i].cantidad) {
+            if (cin >> cantidadConsumir && cantidadConsumir > 0 && cantidadConsumir <= items[i].cantidad) {
                 items[i].cantidad -= cantidadConsumir;
-				fprintf(file, "%s %s %d %d %d %d %d %d %d %d\n", items[i].nombre.c_str(), items[i].categoria.c_str(), items[i].cantidad, items[i].precio,
-                items[i].diaCom, items[i].mesCom, items[i].anoCom, items[i].diaCad, items[i].mesCad, items[i].anoCad);
+            	for(int j = i; j < acum - 1; j++) {
+			        items[j].nombre = items[j + 1].nombre;
+			        items[j].categoria = items[j + 1].categoria;
+			        items[j].cantidad = items[j + 1].cantidad;
+			        items[j].precio = items[j + 1].precio;
+			        items[j].diaCom = items[j + 1].diaCom;
+			        items[j].mesCom = items[j + 1].mesCom;
+			        items[j].anoCom = items[j + 1].anoCom;
+			        items[j].diaCad = items[j + 1].diaCad;
+			        items[j].mesCad = items[j + 1].mesCad;
+			        items[j].anoCad = items[j + 1].anoCad;
+				}
+				--acum;
+				items[acum].nombre = "";
+				items[acum].categoria = "";
+				items[acum].cantidad = 0;
+				items[acum].precio = 0;
+				items[acum].diaCom = 0;
+				items[acum].mesCom = 0;
+				items[acum].anoCom = 0;
+				items[acum].diaCad = 0;
+				items[acum].mesCad = 0;
+				items[acum].anoCad = 0;
+				//fprintf(file, "%s %s %d %d %d %d %d %d %d %d\n", items[i].nombre.c_str(), items[i].categoria.c_str(), items[i].cantidad, items[i].precio,
+                //items[i].diaCom, items[i].mesCom, items[i].anoCom, items[i].diaCad, items[i].mesCad, items[i].anoCad);
                 cout << "Producto consumido exitosamente.\n";
-            } else {
+            }
+			else{
                 cout << "La cantidad ingresada no es válida o excede la cantidad disponible.\n";
             }
             break;
@@ -593,4 +685,5 @@ void consuProduct(products items [], int acum) {
     cout << "Presione enter para volver al menú principal...";
     getch();
     system("CLS");
+    return acum;
 }
