@@ -33,10 +33,11 @@ bool checkCaducidad(int anoCad, int mesCad, int diaCad); //funcion para revisar 
 void logo();
 
 int main() {
+	system("CLS");
+	setlocale(LC_ALL, "");
 	logo();
 	system("CLS");
 	checker();
-	setlocale(LC_ALL, "");
 	products items [9999]; //iniciamos muchos espacios en memoria
 	int menuOpt = 0, acum = 0, iteracion = 0; //usamos acum para tener en cuenta cuantos objetos hay existentes.
 	while(true){
@@ -108,6 +109,7 @@ void checker() {
     if (file == NULL) {
         FILE *newFile = fopen("database.txt", "a");
         if (newFile != NULL) {
+        	
             fclose(newFile);
         } else {
             cerr << "Error al crear el archivo 'database.txt'.\n";
@@ -300,6 +302,8 @@ int addProduct(products items[], int acum) {
 			system("CLS");
         }
         else { 
+        	cin.clear();
+        	cin.ignore(numeric_limits<streamsize>::max(), '\n');
         	iteracion += 1;
         	system("CLS");
 		}
@@ -731,16 +735,23 @@ void logo(){
     cout << "                      #%   % **/ .#(@#                   @     (@      @@    @&%&. (,. &  .#*           \n"            ;
     cout << "                       ,.  *# .    .,%@    (%#(*%,  (#.* @      @@   @@    *(%/      .    .(            \n"            ;
     cout << "                     ..%%%(*,/((.,  % .#@/               @               %&(*%  . */#% &%&&/*           \n"            ;
-    cout << "                      %%,. ./(#(,/(% ,# %@#@&            @           .@@/@# *  #(*.,%&,  .*(,          \n"             ;
-    cout << "                        (        #/(/  **@@, % @(@@(,    @    *%@@#% @.,%# .  */.*       *%            \n"             ;
-    cout << "                                #**.#*(  &/   ,(#%  ..#/%(&/#,   #&(*./ &#, %*%*,(%                    \n"             ;
-    cout << "                                 ,@..%, ../,,. %  /  &  (,  %.# # ,&  / #,. ,/ *@*                     \n"             ;
-    cout << "                            ./*          #/(&%&%##*   * (   ,, .*%#@&%@*,%          */                  \n"            ;
-    cout << "                           / /.(.   **      ,/#/#%*.   ,./* *  .*%#(((.      /,  #  (  .                 \n"           ;
-    cout << "                           ,  ,/.  /(/  ,/.( , . /,   /.(.#(.  (/, &,/.(. # * (  (.  &                   \n"          ;
-    cout << "                              %   (  # % , / ( */                /#. /*  . * #  #   *                    \n"           ;
-    cout << "                              .      /,   .(*                    *    */    *,      /                    \n"           ;
-    cout << "                                 .//     #                               *     (*.                       \n"           ;
-    cout << "                                      .. .,                             .  .                           \n"             ;
+    cout << "                      %%,. ./(#(,/(% ,# %@#@&            @           .@@/@# *  #(*.,%&,  .*(,          \n"         ;
+    cout << "                        (        #/(/  **@@, % @(@@(,    @    *%@@#% @.,%# .  */.*       *%            \n";
+    cout << "                                #**.#*(  &/   ,(#%  ..#/%(&/#,   #&(*./ &#, %*%*,(%                    \n";
+    cout << "                                 ,@..%, ../,,. %  /  &  (,  %.# # ,&  / #,. ,/ *@*                     \n";
+    cout << "                            ./*          #/(&%&%##*   * (   ,, .*%#@&%@*,%          */                  \n";
+    cout << "                           / /.(.   **      ,/#/#%*.   ,./* *  .*%#(((.      /,  #  (  .                 \n";
+    cout << "                           ,  ,/.  /(/  ,/.( , . /,   /.(.#(.  (/, &,/.(. # * (  (.  &                   \n";
+    cout << "                              %   (  # % , / ( */                /#. /*  . * #  #   *                    \n";
+    cout << "                              .      /,   .(*                    *    */    *,      /                    \n";
+    cout << "                                 .//     #                               *     (*.                       \n";
+    cout << "                                      .. .,                             .  .                           \n";
+	cout << "																										\n";
+	cout << "																										\n";
+	cout << "																										\n";
+	cout << "\t\t\t\t\t\tBienvenido a SmartHome									\n";
+	cout << "\t\t\t\t     Un proyecto de Maiker Hernandez y David Gómez						\n";
+	cout << "																										\n";
+	cout << "\t\t\t\t\t    Presiona Enter para continuar...							\n";
 cin.ignore();
 }
