@@ -271,7 +271,6 @@ int addProduct(products items[], int acum) {
 
 		//el fprintf siguiente se debe actualizar con los nuevos inputs.
         cout << "¿Desea agregar otro producto? (1 para Si, 0 para no): ";
-        cin >> exit;
         if (!(cin >> exit) || (cin.peek() != '\n') || exit != 1) {
         	system("CLS");
             continuar = false;
